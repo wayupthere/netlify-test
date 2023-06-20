@@ -14,19 +14,21 @@ function getComments(){
 function renderComments(comments){
     // create variable to save all the html
     let commentHtml = ''
-    comments.forEach((comment) => {
+
+    // loop over the array of comments
+    comments.forEach((commentObj) => {
         // create commentBlock jquery object from HTML
         const $commentBlock = $(`
-            <div class="comment-outer" id="comment-${comment.date}">
+            <div class="comment-outer" id="comment-${commentObj.date}">
                 <div class="comment-name"></div>
-                <div class="comment-date">${comment.date}</div>
+                <div class="comment-date">${commentObj.date}</div>
                 <div class="comment-text"></div>
             </div>`)
 
         // add name and comment to the html
         // needs to be done using .text() to prevent against hacking
-        $commentBlock.find('.comment-name').text(comment.name)
-        $commentBlock.find('.comment-text').text(comment.comment)
+        $commentBlock.find('.comment-name').text(commentObj.name)
+        $commentBlock.find('.comment-text').text(commentObj.comment)
 
         //convert the html element to a string and add the string to the commentHtml variable
         commentHtml += $commentBlock.get(0).outerHTML
@@ -37,10 +39,10 @@ function renderComments(comments){
 }
 
 function handleSuccessResponse(data){
-    // handle success saving comment
+    // data comes back as a string we need to convert it to json
     data = JSON.parse(data)
 
-    // if there is no data.comments default to an empty array
+    // get the comments from the data. If there is no data comments default to an empty array
     const comments = data.comments || []
 
     // render comments on page
