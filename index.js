@@ -76,7 +76,7 @@ function submitForm(token){
         return
     }
 
-    if(!name.length > 2000) {
+    if(!name.length > 5000) {
         alert('Comment is too long')
         return
     }
@@ -107,63 +107,6 @@ function submitForm(token){
         },
     });
 }
-/*
-$('#commentForm').on( "submit", function( event ) {
-    // prevent default action
-    event.preventDefault()
-
-    // get elements as jquery objects
-    const $form = $(this)
-    const $nameField = $form.find('#name')
-    const $commentField = $form.find('#comment')
-
-    // get field values
-    const name = $nameField.val().trim()
-    const comment = $commentField.val().trim()
-
-    // if name or comment is empty alert error
-    if(!name || !comment) {
-        alert('Name, and Comment are required')
-        return
-    }
-
-    if(!name.length > 256) {
-        alert('Name is too long')
-        return
-    }
-
-    if(!name.length > 2000) {
-        alert('Comment is too long')
-        return
-    }
-
-    // get url to submit form to
-    const action = $form.attr('action')
-
-    // create data to send
-    const data = {
-        name:name,
-        comment:comment
-    }
-
-    // send data to server
-    $.post({
-        url: action,
-        data: JSON.stringify(data),
-        success: handleSuccessResponse,
-        error:function(xhr, status, statusText){
-            if(xhr.status >=500){
-                alert('Server Error')
-            } else {
-                // handle user errors here
-                const errors = JSON.parse(xhr.responseText)
-                alert(errors[0].error)
-            }
-        },
-    });
-});
-*/
-
 
 // call the getComments function when the page loads
 getComments()
