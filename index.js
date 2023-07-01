@@ -38,6 +38,10 @@ function renderComments(comments){
     $('#commentList').html(commentHtml)
 }
 
+function resetForm(){
+    $('#name, #comment, #password').val('')
+}
+
 function handleSuccessResponse(data){
     // data comes back as a string we need to convert it to json
     data = JSON.parse(data)
@@ -47,28 +51,40 @@ function handleSuccessResponse(data){
 
     // render comments on page
     renderComments(comments)
+
+    resetForm()
 }
+
+
 
 $('#commentForm').on( "submit", function( event ) {
     // prevent default action
     event.preventDefault()
+
     // get elements as jquery objects
     const $form = $(this)
     const $nameField = $form.find('#name')
     const $commentField = $form.find('#comment')
+    const $passwordField = $form.find('#password')
 
     // get field values
     const name = $nameField.val().trim()
     const comment = $commentField.val().trim()
+    const password = $passwordField.val().trim()
 
-    // if name or comment is empty alert error
-    if(!name || !comment) {
-        alert('Name and Comment are required')
+    // if name or comment or password is empty alert error
+    if(!name || !comment || !password) {
+        alert('Name, Comment and Password are required')
         return
     }
 
     if(!name.length > 256) {
         alert('Name is too long')
+        return
+    }
+
+    if(!password.length > 256) {
+        alert('Password is too long')
         return
     }
 
@@ -83,7 +99,8 @@ $('#commentForm').on( "submit", function( event ) {
     // create data to send
     const data = {
         name:name,
-        comment:comment
+        comment:comment,
+        password:password
     }
 
     // send data to server
@@ -91,18 +108,18 @@ $('#commentForm').on( "submit", function( event ) {
         url: action,
         data: JSON.stringify(data),
         success: handleSuccessResponse,
-        error:function(e){
-            // handle errors saving comment
-            const x = arguments
-            console.log(e)
-            alert('error')
+        error:function(xhr, status, statusText){
+            if(xhr.status >=500){
+                alert('Server Error')
+            } else {
+                // handle user errors here
+                const errors = JSON.parse(xhr.responseText)
+                alert(errors[0].error)
+            }
         },
     });
-
-    // reset form
-    $nameField.val('')
-    $commentField.val('')
 });
+
 
 // call the getComments function when the page loads
 getComments()

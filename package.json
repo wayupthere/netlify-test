@@ -8,5 +8,8 @@
     "serve": "netlify dev"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "octokit": "^2.1.0"
+  }
 }
