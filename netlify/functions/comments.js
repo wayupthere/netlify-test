@@ -34,16 +34,18 @@ exports.handler = async (event, context) => {
         } else {
             return {
                 statusCode: 405,
-                body: {
+                body: JSON.stringify({
                     error:'Method not Allowed'
-                },
+                }),
             };
         }
     } catch(e){
-        console.error(e)
+        console.error(e.stack)
         return {
             statusCode: 500,
-            body: 'Unexpected Error',
+            body: JSON.stringify({
+                error:'Unexpected Error'
+            }),
         };
     }
 };
@@ -51,12 +53,9 @@ exports.handler = async (event, context) => {
 
 async function getCommentsFromGit(){
     const result = await octokit.rest.repos.getContent({
-       /* mediaType: {
-            format: "raw",
-        },*/
         owner: process.env.GITHUB_USER,
         repo: process.env.GITHUB_REPO,
-        path: "comments.json",
+        path: process.env.FILE_NAME,
     });
     const comments = Buffer.from(result.data.content, 'base64').toString()
     return {
@@ -64,25 +63,6 @@ async function getCommentsFromGit(){
         comments : JSON.parse(comments)
     }
 }
-async function getComments(){
-    const data = await fs.readFile('./comments.json', 'utf-8');
-    return JSON.parse(data)
-}
-
-async function saveComments(event){
-    const { name, comment } = JSON.parse(event.body)
-    const date = new Date().getTime()
-    const data = await fs.readFile('./comments.json', 'utf-8');
-    const allComments = JSON.parse(data)
-    allComments.unshift({
-        name:name,
-        date:date,
-        comment:comment
-    })
-
-    await fs.writeFile('./comments.json', JSON.stringify(allComments, null, 2));
-}
-
 
 function validateComment(data){
     const errors = []
@@ -124,7 +104,7 @@ async function saveCommentsToGit(data){
     await octokit.rest.repos.createOrUpdateFileContents({
         owner: process.env.GITHUB_USER,
         repo: process.env.GITHUB_REPO,
-        path: "comments.json",
+        path: process.env.FILE_NAME,
         message: "Add Comment",
         content: Buffer.from(JSON.stringify(comments, null, 2)).toString("base64"),
         branch: process.env.GITHUB_BRANCH,
