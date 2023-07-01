@@ -4,7 +4,6 @@ function getComments(){
         url: commentsUrl,
         success:handleSuccessResponse,
         error:function(e){
-            const x = arguments
             console.log(e)
             alert('error loading comments')
         },
@@ -39,7 +38,7 @@ function renderComments(comments){
 }
 
 function resetForm(){
-    $('#name, #comment, #password').val('')
+    $('#name, #comment').val('')
 }
 
 function handleSuccessResponse(data){
@@ -65,26 +64,19 @@ $('#commentForm').on( "submit", function( event ) {
     const $form = $(this)
     const $nameField = $form.find('#name')
     const $commentField = $form.find('#comment')
-    const $passwordField = $form.find('#password')
 
     // get field values
     const name = $nameField.val().trim()
     const comment = $commentField.val().trim()
-    const password = $passwordField.val().trim()
 
-    // if name or comment or password is empty alert error
-    if(!name || !comment || !password) {
-        alert('Name, Comment and Password are required')
+    // if name or comment is empty alert error
+    if(!name || !comment) {
+        alert('Name, and Comment are required')
         return
     }
 
     if(!name.length > 256) {
         alert('Name is too long')
-        return
-    }
-
-    if(!password.length > 256) {
-        alert('Password is too long')
         return
     }
 
@@ -99,8 +91,7 @@ $('#commentForm').on( "submit", function( event ) {
     // create data to send
     const data = {
         name:name,
-        comment:comment,
-        password:password
+        comment:comment
     }
 
     // send data to server

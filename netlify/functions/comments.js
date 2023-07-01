@@ -1,4 +1,3 @@
-const fs = require('fs').promises
 const Octokit = require('octokit').Octokit
 
 const octokit = new Octokit({ auth: process.env.GITHUB_PAT_TOKEN })
@@ -66,12 +65,12 @@ async function getCommentsFromGit(){
 
 function validateComment(data){
     const errors = []
-    if(data.password !== process.env.PASSWORD){
+   /* if(data.password !== process.env.PASSWORD){
         errors.push({
             field:'password',
             error:'Invalid Password'
         })
-    }
+    }*/
 
     if(data.name.length > 256){
         errors.push({

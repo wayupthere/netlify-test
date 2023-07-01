@@ -5,10 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>My Website</title>
-    <script
-            src="https://code.jquery.com/jquery-3.7.0.min.js"
-            integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g="
-            crossorigin="anonymous"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
    <!-- <link rel="stylesheet" href="./style.css">
     <link rel="icon" href="./favicon.ico" type="image/x-icon">-->
 </head>
@@ -22,10 +20,10 @@
             <label for="comment">Comment</label>
             <textarea id="comment" name="comment"></textarea>
             <br><br>
-            <label for="password">Password</label>
+            <!--<label for="password">Password</label>
             <input type="text" id="password" name="password">
-            <br><br>
-            <input type="submit">
+            <br><br>-->
+            <input class="g-recaptcha" data-sitekey="6LfUeOUmAAAAAAdOawW_vBM4_3NSzbaEiBf-A3fa" data-action='submit' type="submit">
         </form>
 
         <h2>Comments</h2>
