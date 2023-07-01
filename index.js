@@ -55,7 +55,7 @@ function handleSuccessResponse(data){
 }
 
 
-function submitForm(){
+function submitForm(token){
     // get elements as jquery objects
     const $form = $('#commentForm')
     const $nameField = $form.find('#name')
@@ -87,7 +87,8 @@ function submitForm(){
     // create data to send
     const data = {
         name:name,
-        comment:comment
+        comment:comment,
+        'g-recaptcha-response':token
     }
 
     // send data to server
